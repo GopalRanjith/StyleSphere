@@ -1,0 +1,58 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-overlay"></div>
+  <img src="/images/hero_banner.png" alt="Editorial Fashion Banner" class="hero-image" />
+  <div class="hero-content">
+    <span class="hero-tagline">New Season Arrivals</span>
+    <h1 class="title-serif hero-title">The Linen Summer Collection</h1>
+    <p class="hero-description">Embrace light, flowing fabrics designed for warmth and comfort.</p>
+    <button class="btn btn-primary hero-btn" type="button">Explore Collection</button>
+  </div>
+</section>
+
+<!-- Main Catalogue Section -->
+<section class="catalogue-section container">
+  <div class="section-header flex-between mb-3">
+    <h2 class="title-serif section-title">Catalogue</h2>
+    
+    <!-- Category Tabs -->
+    <div class="category-tabs flex">
+      @for (category of categories; track category) {
+        <button
+          type="button"
+          class="category-tab"
+          [class.active]="selectedCategory() === category"
+          (click)="setCategory(category)"
+        >
+          {{ category }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="product-grid">
+    @for (product of filteredProducts(); track product.id) {
+      <div class="product-card" [routerLink]="['/product', product.id]">
+        <div class="product-image-wrapper">
+          <img [src]="product.image" [alt]="product.name" class="product-image" />
+          <span class="product-tag">{{ product.category }}</span>
+        </div>
+        <div class="product-info mt-1">
+          <h3 class="product-name">{{ product.name }}</h3>
+          <div class="product-details flex-between">
+            <span class="product-price">₹{{ product.price }}</span>
+            <div class="product-rating">
+              <span class="star">★</span>
+              <span class="rating-val">{{ product.rating }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="no-products text-center mt-4">
+        <p>No products found in this category.</p>
+      </div>
+    }
+  </div>
+</section>

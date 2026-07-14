@@ -1,0 +1,61 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2 class="title-serif login-title">Sign In</h2>
+    <p class="login-subtitle">Log in to unlock your personalized recommendation space.</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      @if (loginError()) {
+        <div class="alert alert-danger">
+          {{ loginError() }}
+        </div>
+      }
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email address</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          placeholder="e.g. user@stylesphere.com"
+          autocomplete="email"
+        />
+        @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+          <span class="error-msg">
+            @if (loginForm.controls.email.errors?.['required']) { Email is required. }
+            @else if (loginForm.controls.email.errors?.['email']) { Please enter a valid email. }
+          </span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          placeholder="Enter password"
+          autocomplete="current-password"
+        />
+        @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+          <span class="error-msg">
+            @if (loginForm.controls.password.errors?.['required']) { Password is required. }
+            @else if (loginForm.controls.password.errors?.['minlength']) { Must be at least 6 characters. }
+          </span>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-2" [disabled]="isLoading()">
+        @if (isLoading()) { Signing In... } @else { Sign In }
+      </button>
+    </form>
+
+    <div class="demo-account-info mt-3">
+      <p class="demo-text">For testing, use the button below to autofill hardcoded credentials:</p>
+      <button class="btn btn-secondary w-100 mt-1" type="button" (click)="fillCredentials()">
+        Autofill Demo Credentials
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,141 @@
+@if (product(); as currentProduct) {
+  <div class="pdp-container container mt-4">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs mb-3">
+      <a routerLink="/" class="breadcrumb-link">Home</a>
+      <span class="separator">/</span>
+      <span class="breadcrumb-current">{{ currentProduct.name }}</span>
+    </div>
+
+    <div class="pdp-layout">
+      <!-- Left Column: Product Image -->
+      <div class="pdp-image-section">
+        <div class="image-wrapper">
+          <img [src]="currentProduct.image" [alt]="currentProduct.name" class="pdp-main-image" />
+        </div>
+      </div>
+
+      <!-- Right Column: Product Info & Selectors -->
+      <div class="pdp-info-section">
+        <span class="pdp-category">{{ currentProduct.category }}</span>
+        <h1 class="title-serif pdp-title">{{ currentProduct.name }}</h1>
+        <div class="pdp-price-row flex-between mt-1 mb-2">
+          <span class="pdp-price">₹{{ currentProduct.price }}</span>
+          <div class="pdp-rating flex">
+            <span class="star">★</span>
+            <span class="rating-val">{{ currentProduct.rating }}</span>
+            <span class="reviews-count">({{ currentProduct.reviews }} reviews)</span>
+          </div>
+        </div>
+
+        <p class="pdp-description mb-3">{{ currentProduct.description }}</p>
+
+        <!-- Size Selector -->
+        <div class="selector-section mb-2">
+          <div class="selector-header flex-between mb-1">
+            <span class="selector-label">Select Size</span>
+            <button type="button" class="btn-text">Size Guide</button>
+          </div>
+          <div class="size-options flex">
+            @for (size of currentProduct.sizes; track size) {
+              <button
+                type="button"
+                class="size-btn"
+                [class.active]="selectedSize() === size"
+                (click)="setSize(size)"
+              >
+                {{ size }}
+              </button>
+            }
+          </div>
+          @if (sizeError()) {
+            <span class="pdp-error-msg mt-1">Please select a size before adding to bag.</span>
+          }
+        </div>
+
+        <!-- Quantity Selector -->
+        <div class="selector-section mb-3">
+          <label class="form-label" for="qty-select">Quantity</label>
+          <select id="qty-select" class="form-control qty-dropdown" (change)="setQuantity($event)">
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+
+        <!-- CTA Add To Bag -->
+        <button
+          type="button"
+          class="btn btn-primary w-100 pdp-add-btn"
+          [class.btn-added]="isAdded()"
+          (click)="addToBag()"
+        >
+          @if (isAdded()) {
+            ✔ Added to Bag
+          } @else {
+            Add to Bag
+          }
+        </button>
+
+        <!-- AI Shopping Insight Narrative -->
+        <div class="ai-insight-box mt-3 mb-3">
+          <div class="ai-insight-header">
+            <span class="ai-sparkle-icon">✨</span>
+            <span class="ai-insight-title">AI Shopping Insights</span>
+          </div>
+          <div class="ai-insight-content">
+            <p>{{ currentProduct.aiInsight }}</p>
+          </div>
+        </div>
+
+        <!-- Collapsible Accordions -->
+        <div class="accordion-group">
+          <!-- Description Accordion -->
+          <div class="accordion-item" [class.open]="activeTab() === 'description'">
+            <button type="button" class="accordion-header" (click)="setTab('description')">
+              <span>Description & Fit</span>
+              <span class="accordion-arrow">▼</span>
+            </button>
+            <div class="accordion-body">
+              <p><strong>Fit:</strong> Regular Fit</p>
+              <p class="mt-1"><strong>Details:</strong> {{ currentProduct.details }}</p>
+            </div>
+          </div>
+
+          <!-- Materials Accordion -->
+          <div class="accordion-item" [class.open]="activeTab() === 'materials'">
+            <button type="button" class="accordion-header" (click)="setTab('materials')">
+              <span>Materials & Care</span>
+              <span class="accordion-arrow">▼</span>
+            </button>
+            <div class="accordion-body">
+              <p><strong>Materials:</strong> {{ currentProduct.materials }}</p>
+              <p class="mt-1"><strong>Care Instructions:</strong> {{ currentProduct.care }}</p>
+            </div>
+          </div>
+
+          <!-- Shipping Accordion -->
+          <div class="accordion-item" [class.open]="activeTab() === 'shipping'">
+            <button type="button" class="accordion-header" (click)="setTab('shipping')">
+              <span>Shipping & Delivery</span>
+              <span class="accordion-arrow">▼</span>
+            </button>
+            <div class="accordion-body">
+              <p>Standard delivery in 2-4 business days.</p>
+              <p class="mt-1">Free shipping on orders above ₹1,999. Cash on delivery available.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="container text-center pdp-not-found mt-4">
+    <h2 class="title-serif">Product Not Found</h2>
+    <p class="mt-2 mb-3">The dress you are looking for might have sold out or does not exist.</p>
+    <a routerLink="/" class="btn btn-primary">Back to Catalogue</a>
+  </div>
+}

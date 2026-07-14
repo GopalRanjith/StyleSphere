@@ -1,0 +1,264 @@
+.pdp-container {
+  margin-top: 40px;
+  margin-bottom: 80px;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.breadcrumb-link {
+  transition: var(--transition);
+}
+
+.breadcrumb-link:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+.separator {
+  margin: 0 8px;
+}
+
+.breadcrumb-current {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Layout Grid */
+.pdp-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 48px;
+}
+
+@media (max-width: 768px) {
+  .pdp-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* Image Section */
+.pdp-image-section .image-wrapper {
+  background-color: #f0f0f0;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.pdp-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Info Section */
+.pdp-category {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.pdp-title {
+  font-size: 36px;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.pdp-price {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.pdp-rating {
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.reviews-count {
+  color: var(--text-secondary);
+}
+
+.pdp-description {
+  font-size: 15px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 24px;
+}
+
+/* Selectors */
+.selector-section {
+  margin-bottom: 24px;
+}
+
+.selector-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.btn-text:hover {
+  color: var(--text-primary);
+}
+
+.size-options {
+  gap: 8px;
+}
+
+.size-btn {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  width: 44px;
+  height: 44px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.size-btn:hover {
+  border-color: var(--text-primary);
+}
+
+.size-btn.active {
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+  color: #ffffff;
+}
+
+.pdp-error-msg {
+  display: block;
+  font-size: 12px;
+  color: var(--brand-color);
+}
+
+.qty-dropdown {
+  max-width: 120px;
+  height: 44px;
+  cursor: pointer;
+}
+
+/* CTA */
+.pdp-add-btn {
+  height: 52px;
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+.btn-added {
+  background-color: var(--success) !important;
+  color: #ffffff;
+  border-color: var(--success) !important;
+}
+
+/* AI Insight Box */
+.ai-insight-box {
+  background: linear-gradient(135deg, #f5f3ff 0%, #eddfff 100%);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  padding: 20px;
+  position: relative;
+  transition: var(--transition);
+}
+
+.ai-insight-box:hover {
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.08);
+}
+
+.ai-insight-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ai-sparkle-icon {
+  font-size: 16px;
+}
+
+.ai-insight-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6d28d9;
+}
+
+.ai-insight-content p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #4c1d95;
+  font-style: italic;
+}
+
+/* Accordion */
+.accordion-group {
+  border-top: 1px solid var(--border-color);
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.accordion-header {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 16px 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+.accordion-arrow {
+  font-size: 10px;
+  color: var(--text-secondary);
+  transition: transform 0.3s ease;
+}
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 0 4px;
+}
+
+.accordion-item.open .accordion-arrow {
+  transform: rotate(180deg);
+}
+
+.accordion-item.open .accordion-body {
+  max-height: 200px;
+  padding-bottom: 16px;
+}
+
+.pdp-not-found {
+  padding: 80px 20px;
+}
