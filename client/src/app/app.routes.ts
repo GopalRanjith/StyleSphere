@@ -23,6 +23,18 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home').then(m => m.HomeComponent)
   },
   {
+    path: 'men',
+    canActivate: [authGuard],
+    data: { gender: 'men' },
+    loadComponent: () => import('./pages/catalogue/catalogue').then(m => m.CatalogueComponent)
+  },
+  {
+    path: 'women',
+    canActivate: [authGuard],
+    data: { gender: 'women' },
+    loadComponent: () => import('./pages/catalogue/catalogue').then(m => m.CatalogueComponent)
+  },
+  {
     path: 'product/:id',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/product-detail/product-detail').then(m => m.ProductDetailComponent)

@@ -1,0 +1,258 @@
+<div class="catalogue-container container">
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs mb-3">
+    <a routerLink="/" class="breadcrumb-link">Home</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb-current">{{ gender() === 'men' ? 'Men' : 'Women' }}</span>
+  </div>
+
+  <!-- Hero Promo Banner (Souled Store Theme) -->
+  <div class="hero-promo-banner mb-4" [class.men-banner]="gender() === 'men'" [class.women-banner]="gender() === 'women'">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+      @if (gender() === 'men') {
+        <span class="banner-tag">OFFICIAL POP-CULTURE MERCHANDISE</span>
+        <h2 class="banner-title">THE MEN'S CLUB</h2>
+        <p class="banner-subtitle">Bold prints. Premium heavy-weight fabrics. Streetwear classics.</p>
+        <div class="banner-badge-row">
+          <span class="badge-item">⚡ 100% Organic Cotton</span>
+          <span class="badge-item">⚡ Official Collaborations</span>
+          <span class="badge-item">⚡ Flat 30%+ Off</span>
+        </div>
+      } @else {
+        <span class="banner-tag">THE WOMEN'S EDIT</span>
+        <h2 class="banner-title">ELEGANCE REDEFINED</h2>
+        <p class="banner-subtitle">Luxurious satin. Crisp organic cottons. Soft-touch loungewear.</p>
+        <div class="banner-badge-row">
+          <span class="badge-item">✨ Premium Quality</span>
+          <span class="badge-item">✨ Modern Silhouettes</span>
+          <span class="badge-item">✨ Trendy Coordinates</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Shop By Category (Circular Portals) -->
+  <div class="section-portals mb-4">
+    <h3 class="portal-section-title text-center mb-3">Shop By Category</h3>
+    <div class="portals-scroll flex">
+      @for (cat of categories; track cat) {
+        @if (cat !== 'All') {
+          <button 
+            type="button" 
+            class="portal-circle-btn" 
+            [class.active]="selectedCategory() === cat"
+            (click)="setCategory(cat)"
+          >
+            <div class="portal-circle">
+              <!-- Visual representation / Emoji placeholder for maximum premium feel -->
+              <span class="portal-emoji">
+                @if (cat === 'Oversized T-Shirts') { 👕 }
+                @else if (cat === 'Classic Fit T-Shirts') { 👕 }
+                @else if (cat === 'Shirts' || cat === 'Linen' || cat === 'Cotton') { 👔 }
+                @else if (cat === 'Cargo Pants') { 👖 }
+                @else if (cat === 'Hoodies') { 🧥 }
+                @else if (cat === 'Knitwear') { 🧶 }
+                @else if (cat === 'Co-ords') { 👥 }
+                @else if (cat === 'Satin') { 👗 }
+                @else { 🛍️ }
+              </span>
+            </div>
+            <span class="portal-label">{{ cat }}</span>
+          </button>
+        }
+      }
+    </div>
+  </div>
+
+  <!-- Shop By Theme (Official Collaborations) -->
+  <div class="section-portals mb-4">
+    <h3 class="portal-section-title text-center mb-3">Official Collaborations</h3>
+    <div class="portals-scroll flex justify-center">
+      @for (theme of themes; track theme) {
+        <button 
+          type="button" 
+          class="theme-circle-btn" 
+          [class.active]="selectedTheme() === theme"
+          [attr.data-theme]="theme.toLowerCase()"
+          (click)="setTheme(theme)"
+        >
+          <div class="theme-circle">
+            <span class="theme-logo">
+              @if (theme === 'All') { 🌟 }
+              @else if (theme === 'Marvel') { MV }
+              @else if (theme === 'Anime') { 雲 }
+              @else if (theme === 'DC') { DC }
+              @else if (theme === 'Harry Potter') { HP }
+            </span>
+          </div>
+          <span class="theme-label">{{ theme === 'All' ? 'All Themes' : theme }}</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Main Split Layout -->
+  <div class="catalog-layout-grid">
+    <!-- Left Sidebar: Filters -->
+    <aside class="catalog-sidebar">
+      <div class="sidebar-header flex-between mb-3">
+        <h4 class="sidebar-title">Filters</h4>
+        <button type="button" class="btn-clear-all" (click)="clearFilters()">Clear All</button>
+      </div>
+
+      <!-- Filter Group: Categories -->
+      <div class="filter-group mb-3">
+        <h5 class="filter-group-title">Categories</h5>
+        <div class="filter-options-list">
+          @for (cat of categories; track cat) {
+            <label class="filter-checkbox-label">
+              <input 
+                type="radio" 
+                name="category-filter"
+                [checked]="selectedCategory() === cat"
+                (change)="setCategory(cat)"
+                class="filter-radio-input"
+              />
+              <span class="checkbox-custom"></span>
+              <span class="filter-label-text">{{ cat }}</span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Filter Group: Themes -->
+      <div class="filter-group mb-3">
+        <h5 class="filter-group-title">Themes</h5>
+        <div class="filter-options-list">
+          @for (theme of themes; track theme) {
+            <label class="filter-checkbox-label">
+              <input 
+                type="radio" 
+                name="theme-filter"
+                [checked]="selectedTheme() === theme"
+                (change)="setTheme(theme)"
+                class="filter-radio-input"
+              />
+              <span class="checkbox-custom"></span>
+              <span class="filter-label-text">{{ theme === 'All' ? 'All Themes' : theme }}</span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Filter Group: Sizes -->
+      <div class="filter-group mb-3">
+        <h5 class="filter-group-title">Select Sizes</h5>
+        <div class="sizes-filter-grid">
+          @for (size of allSizes; track size) {
+            <button 
+              type="button" 
+              class="size-filter-btn" 
+              [class.active]="selectedSizes().has(size)"
+              (click)="toggleSize(size)"
+            >
+              {{ size }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Filter Group: Price Range -->
+      <div class="filter-group mb-3">
+        <h5 class="filter-group-title">Max Price: ₹{{ maxPrice() }}</h5>
+        <div class="price-slider-wrapper">
+          <input 
+            type="range" 
+            min="500" 
+            max="3000" 
+            step="100"
+            [value]="maxPrice()" 
+            (input)="setPriceLimit($any($event.target).value)"
+            class="price-range-slider"
+          />
+          <div class="price-range-labels flex-between">
+            <span>₹500</span>
+            <span>₹3000</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Content: Products Feed -->
+    <main class="catalog-feed">
+      <div class="feed-header flex-between mb-3">
+        <p class="results-count">
+          Showing <strong>{{ products().length }}</strong> items
+        </p>
+        
+        <div class="sort-selector-wrapper flex">
+          <span class="sort-label">Sort By:</span>
+          <select 
+            [value]="sortBy()"
+            (change)="setSort($any($event.target).value)"
+            class="sort-dropdown"
+          >
+            <option value="relevance">Relevance</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="product-grid">
+        @for (product of products(); track product.id) {
+          <div class="product-card" [routerLink]="['/product', product.id]">
+            <div class="product-image-wrapper">
+              <img [src]="product.image" [alt]="product.name" class="product-image" />
+              
+              <!-- Badges -->
+              <span class="discount-badge">{{ product.discount }}% OFF</span>
+              @if (product.theme) {
+                <span class="theme-badge" [attr.data-theme]="product.theme.toLowerCase()">
+                  {{ product.theme }}
+                </span>
+              }
+
+              <!-- Sizes Drawer on Hover (Premium Aesthetic) -->
+              <div class="sizes-hover-drawer">
+                <span class="drawer-title">AVAILABLE SIZES</span>
+                <div class="drawer-sizes flex">
+                  @for (s of product.sizes; track s) {
+                    <span class="size-pill">{{ s }}</span>
+                  }
+                </div>
+              </div>
+            </div>
+            
+            <div class="product-info mt-1">
+              <div class="category-rating-row flex-between">
+                <span class="product-tag-category">{{ product.category }}</span>
+                <span class="rating-badge flex">
+                  ⭐ {{ product.rating }} <span class="rating-count">({{ product.reviews }})</span>
+                </span>
+              </div>
+              <h3 class="product-name">{{ product.name }}</h3>
+              <div class="product-price-row mt-1">
+                <span class="price-current">₹{{ product.price }}</span>
+                <span class="price-original">₹{{ product.originalPrice }}</span>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="no-products text-center mt-4">
+            <div class="empty-icon">🔍</div>
+            <h4>No items match your selection</h4>
+            <p>Try clearing some filters to see the full collection.</p>
+            <button type="button" class="btn btn-primary mt-2" (click)="clearFilters()">
+              Clear All Filters
+            </button>
+          </div>
+        }
+      </div>
+    </main>
+  </div>
+</div>
+

@@ -1,57 +1,66 @@
-<!-- Hero Section -->
-<section class="hero-section">
-  <div class="hero-overlay"></div>
-  <img src="/images/hero_banner.png" alt="Editorial Fashion Banner" class="hero-image" />
-  <div class="hero-content">
-    <span class="hero-tagline">New Season Arrivals</span>
-    <h1 class="title-serif hero-title">The Linen Summer Collection</h1>
-    <p class="hero-description">Embrace light, flowing fabrics designed for warmth and comfort.</p>
-    <button class="btn btn-primary hero-btn" type="button">Explore Collection</button>
+<!-- Hero Carousel Section -->
+<section class="hero-carousel">
+  <div class="carousel-slide">
+    <img src="/images/hero_banner.png" alt="Souled Store Collection Banner" class="hero-img" />
+    <div class="carousel-caption">
+      <h1 class="carousel-title">OFFICIAL MERCHANDISE</h1>
+      <p class="carousel-subtitle">Bold styles, premium fabrics, pop culture staples.</p>
+      <div class="carousel-buttons flex">
+        <a routerLink="/men" class="btn btn-primary">Shop Men</a>
+        <a routerLink="/women" class="btn btn-secondary">Shop Women</a>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- Main Catalogue Section -->
-<section class="catalogue-section container">
-  <div class="section-header flex-between mb-3">
-    <h2 class="title-serif section-title">Catalogue</h2>
+<!-- Shop By Category / Portals -->
+<section class="category-portals container">
+  <h2 class="section-title text-center mb-3">Shop By Category</h2>
+  <div class="portals-grid">
+    <!-- Men Portal -->
+    <div class="portal-card" routerLink="/men">
+      <div class="portal-image-wrapper">
+        <img src="/images/knit_dress.png" alt="Shop Men" class="portal-image" />
+        <div class="portal-overlay">
+          <span class="portal-label">Men</span>
+        </div>
+      </div>
+    </div>
     
-    <!-- Category Tabs -->
-    <div class="category-tabs flex">
-      @for (category of categories; track category) {
-        <button
-          type="button"
-          class="category-tab"
-          [class.active]="selectedCategory() === category"
-          (click)="setCategory(category)"
-        >
-          {{ category }}
-        </button>
-      }
+    <!-- Women Portal -->
+    <div class="portal-card" routerLink="/women">
+      <div class="portal-image-wrapper">
+        <img src="/images/slip_dress.png" alt="Shop Women" class="portal-image" />
+        <div class="portal-overlay">
+          <span class="portal-label">Women</span>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- Product Grid -->
+<!-- Trending Styles Section -->
+<section class="trending-section container mt-4">
+  <div class="flex-between mb-3">
+    <h2 class="section-title">Trending Now</h2>
+    <a routerLink="/men" class="view-all-link">View All Items ➔</a>
+  </div>
+
   <div class="product-grid">
     @for (product of filteredProducts(); track product.id) {
       <div class="product-card" [routerLink]="['/product', product.id]">
         <div class="product-image-wrapper">
           <img [src]="product.image" [alt]="product.name" class="product-image" />
-          <span class="product-tag">{{ product.category }}</span>
+          <span class="discount-badge">{{ product.discount }}% OFF</span>
         </div>
         <div class="product-info mt-1">
+          <span class="product-tag-category">{{ product.category }}</span>
           <h3 class="product-name">{{ product.name }}</h3>
-          <div class="product-details flex-between">
-            <span class="product-price">₹{{ product.price }}</span>
-            <div class="product-rating">
-              <span class="star">★</span>
-              <span class="rating-val">{{ product.rating }}</span>
-            </div>
+          <div class="product-price-row mt-1">
+            <span class="price-current">₹{{ product.price }}</span>
+            <span class="price-original">₹{{ product.originalPrice }}</span>
           </div>
         </div>
-      </div>
-    } @empty {
-      <div class="no-products text-center mt-4">
-        <p>No products found in this category.</p>
       </div>
     }
   </div>

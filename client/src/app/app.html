@@ -1,50 +1,48 @@
-<!-- Top Promotion Bar -->
-<div class="top-bar flex-between">
-  <div class="container top-bar-content flex-between">
-    <span class="top-bar-text">Free standard shipping on orders above ₹1,999</span>
-    <span class="top-bar-text">Demo Creds: <strong>user@stylesphere.com</strong> / <strong>password123</strong></span>
+<!-- Top Info Bar -->
+<div class="top-info-bar">
+  <div class="container bar-content flex-between">
+    <span>Free Standard Shipping on orders above ₹1,999</span>
+    <span>Demo Login: <strong>user@stylesphere.com</strong> / <strong>password123</strong></span>
   </div>
 </div>
 
-<!-- Premium Header -->
+<!-- Header Shell -->
 <header class="app-header">
   <div class="container header-container flex-between">
     
-    <!-- Left: Navigation Links -->
-    <nav class="main-nav">
-      <ul class="nav-list flex">
-        <li><a routerLink="/" class="nav-link">Ladies</a></li>
-        <li><a routerLink="/" class="nav-link">Men</a></li>
-        <li><a routerLink="/" class="nav-link">Divided</a></li>
-        <li><a routerLink="/" class="nav-link">Baby</a></li>
-        <li><a routerLink="/" class="nav-link brand-nav">AI Recommendations</a></li>
+    <!-- Left: Brand Logo -->
+    <div class="logo-wrapper">
+      <a routerLink="/" class="brand-logo">StyleSphere</a>
+    </div>
+
+    <!-- Center: Main Categories Navigation -->
+    <nav class="main-navigation">
+      <ul class="nav-links flex">
+        <li><a routerLink="/men" routerLinkActive="active-nav" class="nav-item">Men</a></li>
+        <li><a routerLink="/women" routerLinkActive="active-nav" class="nav-item">Women</a></li>
+        <li><a routerLink="/" class="nav-item ai-nav">AI Styling</a></li>
       </ul>
     </nav>
 
-    <!-- Center: Brand Logo -->
-    <div class="logo-container">
-      <a routerLink="/" class="brand-logo title-serif">StyleSphere</a>
-    </div>
-
-    <!-- Right: Customer Actions -->
-    <div class="customer-actions flex">
+    <!-- Right: Member Services & Bag -->
+    <div class="header-actions flex">
       @if (authService.isAuthenticated()) {
-        <div class="user-profile flex">
-          <span class="user-email">Hi, {{ authService.currentUser()?.email }}</span>
-          <button type="button" class="btn-logout" (click)="logout()">Sign Out</button>
+        <div class="member-profile flex">
+          <span class="user-greeting">Hi, {{ authService.currentUser()?.email?.split('@')?.[0] }}</span>
+          <button type="button" class="btn-signout" (click)="logout()">Sign Out</button>
         </div>
       } @else {
-        <a routerLink="/login" class="action-link flex">
+        <a routerLink="/login" class="action-btn flex">
           <span class="icon">👤</span>
-          <span class="action-text">Sign In</span>
+          <span>Login</span>
         </a>
       }
 
-      <a class="action-link flex bag-link">
+      <a class="action-btn flex bag-btn">
         <span class="icon">🛍️</span>
-        <span class="action-text">Shopping Bag</span>
+        <span class="bag-label">Bag</span>
         @if (cartService.totalItemsCount() > 0) {
-          <span class="bag-badge">{{ cartService.totalItemsCount() }}</span>
+          <span class="badge">{{ cartService.totalItemsCount() }}</span>
         }
       </a>
     </div>
@@ -52,23 +50,23 @@
   </div>
 </header>
 
-<!-- Main Workspace Content -->
-<main class="main-content">
+<!-- Main Workspace Layout -->
+<main class="main-wrapper">
   <router-outlet></router-outlet>
 </main>
 
-<!-- Minimal Footer -->
+<!-- Footer -->
 <footer class="app-footer">
-  <div class="container footer-container text-center">
-    <p class="footer-logo title-serif">StyleSphere</p>
-    <p class="footer-tagline">The future of fashion recommendation. Powered by Gemini.</p>
-    <div class="footer-links flex mt-2">
-      <a href="#">Contact Us</a>
-      <span class="dot">•</span>
-      <a href="#">Privacy Policy</a>
-      <span class="dot">•</span>
-      <a href="#">Terms & Conditions</a>
+  <div class="container footer-content text-center">
+    <h3 class="footer-logo">StyleSphere</h3>
+    <p class="footer-tagline">Pop-culture e-commerce recommendation system. Inspired by The Souled Store.</p>
+    <div class="footer-sub-links flex mt-2">
+      <a href="#">Help & Support</a>
+      <span class="bullet">•</span>
+      <a href="#">Return Policy</a>
+      <span class="bullet">•</span>
+      <a href="#">Privacy Settings</a>
     </div>
-    <p class="copyright mt-3">© 2026 StyleSphere. All rights reserved. S4-I-16 Capstone Project.</p>
+    <p class="copyright mt-3">© 2026 StyleSphere. All rights reserved. S4-I-16 Capstone.</p>
   </div>
 </footer>

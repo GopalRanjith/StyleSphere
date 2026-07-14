@@ -1,61 +1,97 @@
 <div class="login-wrapper">
   <div class="login-card">
-    <h2 class="title-serif login-title">Sign In</h2>
-    <p class="login-subtitle">Log in to unlock your personalized recommendation space.</p>
-
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      @if (loginError()) {
-        <div class="alert alert-danger">
-          {{ loginError() }}
-        </div>
-      }
-
-      <div class="form-group">
-        <label class="form-label" for="email">Email address</label>
-        <input
-          type="email"
-          id="email"
-          formControlName="email"
-          class="form-control"
-          placeholder="e.g. user@stylesphere.com"
-          autocomplete="email"
-        />
-        @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
-          <span class="error-msg">
-            @if (loginForm.controls.email.errors?.['required']) { Email is required. }
-            @else if (loginForm.controls.email.errors?.['email']) { Please enter a valid email. }
-          </span>
-        }
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          class="form-control"
-          placeholder="Enter password"
-          autocomplete="current-password"
-        />
-        @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
-          <span class="error-msg">
-            @if (loginForm.controls.password.errors?.['required']) { Password is required. }
-            @else if (loginForm.controls.password.errors?.['minlength']) { Must be at least 6 characters. }
-          </span>
-        }
-      </div>
-
-      <button type="submit" class="btn btn-primary w-100 mt-2" [disabled]="isLoading()">
-        @if (isLoading()) { Signing In... } @else { Sign In }
+    <!-- Souled Store Style Tabs -->
+    <div class="login-tabs">
+      <button
+        type="button"
+        class="login-tab-btn"
+        [class.active]="activeSubTab() === 'login'"
+        (click)="setTab('login')"
+      >
+        Login
       </button>
-    </form>
-
-    <div class="demo-account-info mt-3">
-      <p class="demo-text">For testing, use the button below to autofill hardcoded credentials:</p>
-      <button class="btn btn-secondary w-100 mt-1" type="button" (click)="fillCredentials()">
-        Autofill Demo Credentials
+      <button
+        type="button"
+        class="login-tab-btn"
+        [class.active]="activeSubTab() === 'register'"
+        (click)="setTab('register')"
+      >
+        Register
       </button>
     </div>
+
+    @if (activeSubTab() === 'login') {
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        @if (loginError()) {
+          <div class="alert alert-danger">
+            {{ loginError() }}
+          </div>
+        }
+
+        <div class="form-group">
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            placeholder="Email ID"
+            autocomplete="email"
+          />
+          @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+            <span class="error-msg">
+              @if (loginForm.controls.email.errors?.['required']) { Email is required. }
+              @else if (loginForm.controls.email.errors?.['email']) { Please enter a valid email. }
+            </span>
+          }
+        </div>
+
+        <div class="form-group">
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            placeholder="Password"
+            autocomplete="current-password"
+          />
+          @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+            <span class="error-msg">
+              @if (loginForm.controls.password.errors?.['required']) { Password is required. }
+              @else if (loginForm.controls.password.errors?.['minlength']) { Must be at least 6 characters. }
+            </span>
+          }
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-2" [disabled]="isLoading()">
+          @if (isLoading()) { Logging In... } @else { Proceed }
+        </button>
+      </form>
+
+      <div class="demo-account-info mt-3">
+        <p class="demo-text">For testing, use the button below to autofill demo credentials:</p>
+        <button class="btn btn-secondary w-100 mt-1" type="button" (click)="fillCredentials()">
+          Autofill Demo Credentials
+        </button>
+      </div>
+    } @else {
+      <!-- Register Form Placeholder -->
+      <div class="register-form mt-2">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="First Name" />
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Last Name" />
+        </div>
+        <div class="form-group">
+          <input type="email" class="form-control" placeholder="Email ID" />
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" placeholder="Create Password" />
+        </div>
+        <button type="button" class="btn btn-primary w-100 mt-2" (click)="setTab('login')">
+          Register & Sign In
+        </button>
+      </div>
+    }
   </div>
 </div>

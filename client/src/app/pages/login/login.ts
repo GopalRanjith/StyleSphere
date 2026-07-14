@@ -14,6 +14,8 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
+  readonly activeSubTab = signal<'login' | 'register'>('login');
+
   readonly loginForm = new FormGroup({
     email: new FormControl('', {
       nonNullable: true,
@@ -28,6 +30,11 @@ export class LoginComponent {
   readonly loginError = signal<string | null>(null);
   readonly isLoading = signal<boolean>(false);
 
+  setTab(tab: 'login' | 'register'): void {
+    this.activeSubTab.set(tab);
+    this.loginError.set(null);
+  }
+
   onSubmit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
@@ -39,7 +46,6 @@ export class LoginComponent {
 
     const { email, password } = this.loginForm.getRawValue();
 
-    // Simulate network latency
     setTimeout(() => {
       const success = this.authService.login(email, password);
       this.isLoading.set(false);

@@ -4,6 +4,10 @@
     <div class="breadcrumbs mb-3">
       <a routerLink="/" class="breadcrumb-link">Home</a>
       <span class="separator">/</span>
+      <a [routerLink]="currentProduct.gender === 'men' ? '/men' : '/women'" class="breadcrumb-link">
+        {{ currentProduct.gender === 'men' ? 'Men' : 'Women' }}
+      </a>
+      <span class="separator">/</span>
       <span class="breadcrumb-current">{{ currentProduct.name }}</span>
     </div>
 
@@ -19,13 +23,19 @@
       <div class="pdp-info-section">
         <span class="pdp-category">{{ currentProduct.category }}</span>
         <h1 class="title-serif pdp-title">{{ currentProduct.name }}</h1>
-        <div class="pdp-price-row flex-between mt-1 mb-2">
+        
+        <div class="pdp-price-row mt-1 mb-2">
           <span class="pdp-price">₹{{ currentProduct.price }}</span>
+          <span class="pdp-price-original">₹{{ currentProduct.originalPrice }}</span>
+          <span class="pdp-discount">({{ currentProduct.discount }}% OFF)</span>
+        </div>
+
+        <div class="pdp-rating-row flex mb-2">
           <div class="pdp-rating flex">
             <span class="star">★</span>
             <span class="rating-val">{{ currentProduct.rating }}</span>
-            <span class="reviews-count">({{ currentProduct.reviews }} reviews)</span>
           </div>
+          <span class="reviews-count">{{ currentProduct.reviews }} customer reviews</span>
         </div>
 
         <p class="pdp-description mb-3">{{ currentProduct.description }}</p>
@@ -83,7 +93,7 @@
         <div class="ai-insight-box mt-3 mb-3">
           <div class="ai-insight-header">
             <span class="ai-sparkle-icon">✨</span>
-            <span class="ai-insight-title">AI Shopping Insights</span>
+            <span class="ai-insight-title">AI Styling Narrative</span>
           </div>
           <div class="ai-insight-content">
             <p>{{ currentProduct.aiInsight }}</p>
@@ -95,11 +105,11 @@
           <!-- Description Accordion -->
           <div class="accordion-item" [class.open]="activeTab() === 'description'">
             <button type="button" class="accordion-header" (click)="setTab('description')">
-              <span>Description & Fit</span>
+              <span>Product Specifications</span>
               <span class="accordion-arrow">▼</span>
             </button>
             <div class="accordion-body">
-              <p><strong>Fit:</strong> Regular Fit</p>
+              <p><strong>Fit:</strong> Standard Regular Fit</p>
               <p class="mt-1"><strong>Details:</strong> {{ currentProduct.details }}</p>
             </div>
           </div>
@@ -107,24 +117,24 @@
           <!-- Materials Accordion -->
           <div class="accordion-item" [class.open]="activeTab() === 'materials'">
             <button type="button" class="accordion-header" (click)="setTab('materials')">
-              <span>Materials & Care</span>
+              <span>Fabric & Care</span>
               <span class="accordion-arrow">▼</span>
             </button>
             <div class="accordion-body">
-              <p><strong>Materials:</strong> {{ currentProduct.materials }}</p>
-              <p class="mt-1"><strong>Care Instructions:</strong> {{ currentProduct.care }}</p>
+              <p><strong>Composition:</strong> {{ currentProduct.materials }}</p>
+              <p class="mt-1"><strong>Care:</strong> {{ currentProduct.care }}</p>
             </div>
           </div>
 
           <!-- Shipping Accordion -->
           <div class="accordion-item" [class.open]="activeTab() === 'shipping'">
             <button type="button" class="accordion-header" (click)="setTab('shipping')">
-              <span>Shipping & Delivery</span>
+              <span>Easy 30-Day Returns</span>
               <span class="accordion-arrow">▼</span>
             </button>
             <div class="accordion-body">
               <p>Standard delivery in 2-4 business days.</p>
-              <p class="mt-1">Free shipping on orders above ₹1,999. Cash on delivery available.</p>
+              <p class="mt-1">Easy return policy within 30 days of purchase. Free shipping on online payments.</p>
             </div>
           </div>
         </div>
@@ -135,7 +145,7 @@
 } @else {
   <div class="container text-center pdp-not-found mt-4">
     <h2 class="title-serif">Product Not Found</h2>
-    <p class="mt-2 mb-3">The dress you are looking for might have sold out or does not exist.</p>
-    <a routerLink="/" class="btn btn-primary">Back to Catalogue</a>
+    <p class="mt-2 mb-3">The item you are looking for might have sold out or does not exist.</p>
+    <a routerLink="/" class="btn btn-primary">Back to Home</a>
   </div>
 }
