@@ -1,0 +1,86 @@
+# Miscellaneous
+/client/dist/
+/client/.angular/
+/client/.sass-cache/
+/client/connect.lock
+/client/coverage/
+/client/libpeerconnection.log
+/client/npm-debug.log
+/client/testem.log
+/client/typings/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Dependency directories
+node_modules/
+/client/node_modules/
+/server/node_modules/
+jspm_packages/
+web_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Output directory used by TypeScript compiler
+/client/out-dist/
+
+# Editor files and directories
+.idea/
+.project
+.classpath
+.cproject
+.settings/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Python files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# SQLite files
+*.db
+*.sqlite
+*.sqlite3
+
+# Local environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
