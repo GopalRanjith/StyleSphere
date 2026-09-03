@@ -41,8 +41,8 @@ app.http('getCart', {
                     p.name,
                     p.gender,
                     c.name AS category,
-                    CAST(p.price AS DOUBLE) AS price,
-                    CAST(p.original_price AS DOUBLE) AS originalPrice,
+                    p.price,
+                    p.original_price AS originalPrice,
                     p.discount,
                     p.image
                 FROM cart_items ci
@@ -132,13 +132,22 @@ app.http('addToCart', {
             }
 
             // Upsert into cart_items
-            const upsertQuery = `
-                INSERT INTO cart_items (user_id, product_id, size_id, quantity)
-                VALUES (?, ?, ?, ?)
-                ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)
-            `;
+            const [existing] = await db.execute(
+                'SELECT id, quantity FROM cart_items WHERE user_id = ? AND product_id = ? AND size_id = ?',
+                [userId, productId, sizeId]
+            );
 
-            await db.execute(upsertQuery, [userId, productId, sizeId, quantity]);
+            if (existing && existing.length > 0) {
+                await db.execute(
+                    'UPDATE cart_items SET quantity = quantity + ? WHERE id = ?',
+                    [quantity, existing[0].id]
+                );
+            } else {
+                await db.execute(
+                    'INSERT INTO cart_items (user_id, product_id, size_id, quantity) VALUES (?, ?, ?, ?)',
+                    [userId, productId, sizeId, quantity]
+                );
+            }
 
             // Optional: log behavioral event for recommendation engine
             try {

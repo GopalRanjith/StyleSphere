@@ -33,21 +33,17 @@ app.http('getRecommendations', {
                     p.gender,
                     c.name AS category,
                     t.name AS theme,
-                    CAST(p.price AS DOUBLE) AS price,
-                    CAST(p.original_price AS DOUBLE) AS originalPrice,
+                    p.price,
+                    p.original_price AS originalPrice,
                     p.discount,
                     p.image,
-                    CAST(p.rating AS DOUBLE) AS rating,
+                    p.rating,
                     p.reviews,
                     p.description,
-                    p.ai_insight AS aiInsight,
-                    GROUP_CONCAT(s.size_name ORDER BY s.id SEPARATOR ',') AS sizes_csv
+                    p.ai_insight AS aiInsight
                 FROM products p
                 JOIN categories c ON p.category_id = c.id
                 LEFT JOIN themes t ON p.theme_id = t.id
-                LEFT JOIN product_sizes ps ON p.id = ps.product_id
-                LEFT JOIN sizes s ON ps.size_id = s.id
-                GROUP BY p.id
                 ORDER BY p.rating DESC, p.reviews DESC
             `);
 

@@ -61,7 +61,7 @@ app.http('getOrders', {
                     p.image,
                     s.size_name AS size,
                     oi.quantity,
-                    CAST(oi.price AS DOUBLE) AS price
+                    oi.price
                 FROM order_items oi
                 JOIN products p ON oi.product_id = p.id
                 JOIN sizes s ON oi.size_id = s.id
