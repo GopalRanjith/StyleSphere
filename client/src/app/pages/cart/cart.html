@@ -1,0 +1,234 @@
+<div class="cart-page-container">
+  <div class="container">
+    
+    <!-- Success Confirmation Overlay -->
+    @if (orderSuccess()) {
+      <div class="checkout-success-modal">
+        <div class="success-card text-center">
+          <div class="success-icon-badge">🎉</div>
+          <h2>Order Confirmed!</h2>
+          <p class="order-id-label">Order Number: <strong>#{{ orderSuccess() }}</strong></p>
+          <p class="success-msg">Thank you for shopping with StyleSphere. Your order has been placed in the database and is being processed.</p>
+          <div class="action-buttons flex-center mt-3">
+            <button class="btn btn-primary" (click)="goToOrders()">View in Order History</button>
+            <a routerLink="/" class="btn btn-secondary">Continue Shopping</a>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Page Title -->
+    <div class="cart-header flex-between mb-4">
+      <div>
+        <h1 class="page-title">My Shopping Bag</h1>
+        <p class="subtitle">{{ cartService.totalItemsCount() }} item(s) selected for checkout</p>
+      </div>
+      <a routerLink="/" class="continue-link">← Continue Shopping</a>
+    </div>
+
+    @if (cartService.cartItems().length === 0 && !orderSuccess()) {
+      <!-- Empty Bag State -->
+      <div class="empty-bag-card text-center">
+        <div class="empty-icon">🛍️</div>
+        <h3>Your Shopping Bag is Empty</h3>
+        <p>Looks like you haven't added any designer fits or pop-culture drops yet.</p>
+        <div class="empty-actions mt-3">
+          <a routerLink="/men" class="btn btn-primary mr-2">Shop Men's Drops</a>
+          <a routerLink="/women" class="btn btn-primary">Shop Women's Drops</a>
+        </div>
+      </div>
+    } @else if (cartService.cartItems().length > 0) {
+      <div class="cart-grid">
+        
+        <!-- Left Column: Items List -->
+        <div class="cart-items-section">
+          
+          <!-- Free Shipping Progress Tracker -->
+          <div class="shipping-progress-banner">
+            @if (cartService.isFreeShipping()) {
+              <div class="shipping-achieved flex">
+                <span class="truck-icon">🚚</span>
+                <span><strong>Congratulations!</strong> You have unlocked <strong>FREE Standard Shipping</strong>!</span>
+              </div>
+            } @else {
+              <div class="shipping-needed flex">
+                <span class="truck-icon">📦</span>
+                <span>Add <strong>₹{{ cartService.freeShippingThreshold - cartService.subtotal() }}</strong> more to unlock <strong>FREE Shipping</strong>!</span>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" [style.width.%]="(cartService.subtotal() / cartService.freeShippingThreshold) * 100"></div>
+              </div>
+            }
+          </div>
+
+          <!-- Items List Cards -->
+          <div class="items-list">
+            @for (item of cartService.cartItems(); track item.product.id + '-' + item.size) {
+              <div class="cart-item-card flex">
+                <div class="item-image-wrapper">
+                  <img [src]="item.product.image" [alt]="item.product.name" class="item-img" />
+                </div>
+
+                <div class="item-details flex-1">
+                  <div class="item-top flex-between">
+                    <div>
+                      <span class="item-cat-badge">{{ item.product.category }}</span>
+                      <h3 class="item-title">
+                        <a [routerLink]="['/product', item.product.id]">{{ item.product.name }}</a>
+                      </h3>
+                      <div class="item-meta flex">
+                        <span class="size-pill">Size: <strong>{{ item.size }}</strong></span>
+                        <span class="gender-pill">{{ item.product.gender | titlecase }}</span>
+                      </div>
+                    </div>
+                    
+                    <div class="item-pricing text-right">
+                      <div class="current-price">₹{{ item.product.price * item.quantity }}</div>
+                      @if (item.product.originalPrice > item.product.price) {
+                        <div class="original-price">₹{{ item.product.originalPrice * item.quantity }}</div>
+                        <div class="discount-tag">{{ item.product.discount }}% OFF</div>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="item-actions flex-between mt-3">
+                    <!-- Stepper -->
+                    <div class="quantity-stepper flex">
+                      <button 
+                        type="button" 
+                        class="step-btn" 
+                        (click)="cartService.updateQuantity(item.product.id, item.size, item.quantity - 1)"
+                        aria-label="Decrease quantity"
+                      >−</button>
+                      <span class="step-value">{{ item.quantity }}</span>
+                      <button 
+                        type="button" 
+                        class="step-btn" 
+                        (click)="cartService.updateQuantity(item.product.id, item.size, item.quantity + 1)"
+                        aria-label="Increase quantity"
+                      >+</button>
+                    </div>
+
+                    <!-- Remove Button -->
+                    <button 
+                      type="button" 
+                      class="btn-remove flex" 
+                      (click)="cartService.removeFromCart(item.product.id, item.size)"
+                    >
+                      <span class="trash-icon">🗑️</span>
+                      <span>Remove</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+        </div>
+
+        <!-- Right Column: Order Summary Sidebar -->
+        <div class="cart-summary-section">
+          <div class="summary-card">
+            <h2 class="summary-title">Order Summary</h2>
+
+            <!-- Coupon Code Input -->
+            <div class="coupon-box mb-3">
+              <label class="coupon-label">Have a Promo Code?</label>
+              <div class="coupon-input-group flex">
+                <input 
+                  #promoInput 
+                  type="text" 
+                  placeholder="e.g. STYLE2026" 
+                  class="input-promo" 
+                  [disabled]="promoApplied()"
+                />
+                <button 
+                  type="button" 
+                  class="btn-apply-coupon" 
+                  (click)="applyPromo(promoInput.value)"
+                  [disabled]="promoApplied()"
+                >
+                  {{ promoApplied() ? 'Applied' : 'Apply' }}
+                </button>
+              </div>
+              @if (promoApplied()) {
+                <div class="promo-success-alert flex mt-1">
+                  <span>✓ Promo 'STYLE2026' applied (-₹200)</span>
+                </div>
+              }
+            </div>
+
+            <!-- Price Breakdown -->
+            <div class="summary-breakdown">
+              <div class="breakdown-row flex-between">
+                <span>Bag Subtotal ({{ cartService.totalItemsCount() }} items)</span>
+                <span class="val">₹{{ cartService.subtotal() }}</span>
+              </div>
+
+              <div class="breakdown-row flex-between">
+                <span>Shipping Fee</span>
+                <span class="val" [class.free-green]="cartService.shippingFee() === 0">
+                  {{ cartService.shippingFee() === 0 ? 'FREE' : '₹' + cartService.shippingFee() }}
+                </span>
+              </div>
+
+              <div class="breakdown-row flex-between">
+                <span>GST & Duties (5%)</span>
+                <span class="val">₹{{ cartService.taxAmount() }}</span>
+              </div>
+
+              @if (promoApplied()) {
+                <div class="breakdown-row flex-between discount-row">
+                  <span>Coupon Discount</span>
+                  <span class="val-green">-₹{{ promoDiscount() }}</span>
+                </div>
+              }
+
+              <div class="summary-divider"></div>
+
+              <div class="breakdown-row flex-between total-row">
+                <span>Total Amount</span>
+                <span class="grand-total">₹{{ getFinalTotal() }}</span>
+              </div>
+            </div>
+
+            <!-- Checkout Primary Button -->
+            <button 
+              type="button" 
+              class="btn-checkout-now flex-center mt-3" 
+              (click)="checkout()"
+              [disabled]="isPlacingOrder()"
+            >
+              @if (isPlacingOrder()) {
+                <span class="spinner"></span>
+                <span>Placing Your Order...</span>
+              } @else {
+                <span>Proceed to Checkout (₹{{ getFinalTotal() }})</span>
+                <span class="arrow-right">→</span>
+              }
+            </button>
+
+            <!-- Trust Badges -->
+            <div class="trust-badges-grid mt-4">
+              <div class="trust-item flex">
+                <span class="trust-icon">🔒</span>
+                <span>Secure 256-Bit SSL Checkout</span>
+              </div>
+              <div class="trust-item flex">
+                <span class="trust-icon">🔄</span>
+                <span>7-Day Easy Replacement</span>
+              </div>
+              <div class="trust-item flex">
+                <span class="trust-icon">✨</span>
+                <span>100% Genuine Apparel</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    }
+
+  </div>
+</div>

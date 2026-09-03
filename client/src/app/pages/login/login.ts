@@ -1,11 +1,13 @@
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -16,6 +18,7 @@ export class LoginComponent {
 
   readonly activeSubTab = signal<'login' | 'register'>('login');
 
+  // Login Form
   readonly loginForm = new FormGroup({
     email: new FormControl('', {
       nonNullable: true,
@@ -27,15 +30,37 @@ export class LoginComponent {
     })
   });
 
+  // Register Form
+  readonly registerForm = new FormGroup({
+    firstName: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required]
+    }),
+    lastName: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required]
+    }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email]
+    }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(6)]
+    })
+  });
+
   readonly loginError = signal<string | null>(null);
+  readonly registerError = signal<string | null>(null);
   readonly isLoading = signal<boolean>(false);
 
   setTab(tab: 'login' | 'register'): void {
     this.activeSubTab.set(tab);
     this.loginError.set(null);
+    this.registerError.set(null);
   }
 
-  onSubmit(): void {
+  async onLoginSubmit(): Promise<void> {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -46,22 +71,52 @@ export class LoginComponent {
 
     const { email, password } = this.loginForm.getRawValue();
 
-    setTimeout(() => {
-      const success = this.authService.login(email, password);
+    try {
+      const result = await this.authService.login(email, password);
       this.isLoading.set(false);
 
-      if (success) {
+      if (result.success) {
         this.router.navigate(['/']);
       } else {
-        this.loginError.set('Invalid email or password. Please use user@stylesphere.com / password123.');
+        this.loginError.set(result.error || 'Invalid email or password. Please check your credentials.');
       }
-    }, 800);
+    } catch {
+      this.isLoading.set(false);
+      this.loginError.set('Authentication service error. Please try again.');
+    }
   }
 
-  fillCredentials(): void {
+  async onRegisterSubmit(): Promise<void> {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.registerError.set(null);
+
+    const { email, password, firstName, lastName } = this.registerForm.getRawValue();
+
+    try {
+      const result = await this.authService.register(email, password, firstName, lastName);
+      this.isLoading.set(false);
+
+      if (result.success) {
+        this.router.navigate(['/']);
+      } else {
+        this.registerError.set(result.error || 'Registration failed. Please try again.');
+      }
+    } catch {
+      this.isLoading.set(false);
+      this.registerError.set('Registration service error. Please try again.');
+    }
+  }
+
+  fillAccount(email: string): void {
     this.loginForm.setValue({
-      email: 'user@stylesphere.com',
+      email,
       password: 'password123'
     });
+    this.loginError.set(null);
   }
 }

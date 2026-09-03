@@ -1,0 +1,110 @@
+<div class="orders-page-container">
+  <div class="container">
+    
+    <!-- Header -->
+    <div class="orders-header flex-between mb-4">
+      <div>
+        <h1 class="page-title">My Orders</h1>
+        <p class="subtitle">Track your shipments, view invoices, and manage past purchases</p>
+      </div>
+      <a routerLink="/" class="btn-shop-more">Continue Shopping →</a>
+    </div>
+
+    @if (orderService.isLoading()) {
+      <div class="loading-state text-center">
+        <div class="spinner-lg"></div>
+        <p>Retrieving your order records...</p>
+      </div>
+    } @else if (orderService.orders().length === 0) {
+      <!-- Empty Orders State -->
+      <div class="empty-orders-card text-center">
+        <div class="empty-icon">📦</div>
+        <h2>No Orders Placed Yet</h2>
+        <p>You haven't made any purchases with StyleSphere yet. Discover our curated collections today!</p>
+        <div class="empty-actions mt-3">
+          <a routerLink="/men" class="btn btn-primary mr-2">Explore Men's Styles</a>
+          <a routerLink="/women" class="btn btn-primary">Explore Women's Styles</a>
+        </div>
+      </div>
+    } @else {
+      <!-- Orders List -->
+      <div class="orders-list">
+        @for (order of orderService.orders(); track order.id) {
+          <div class="order-card">
+            
+            <!-- Order Card Header -->
+            <div class="order-card-header flex-between">
+              <div class="order-id-group">
+                <span class="order-num-badge">{{ order.orderNumber }}</span>
+                <span class="order-date">Placed on {{ order.createdAt | date:'mediumDate' }}</span>
+              </div>
+
+              <div class="order-header-right flex">
+                <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+                  ● {{ order.status }}
+                </span>
+                <span class="order-total-header">Total: <strong>₹{{ order.totalAmount }}</strong></span>
+              </div>
+            </div>
+
+            <!-- Delivery Progress Stepper -->
+            <div class="delivery-tracker">
+              <div class="tracker-step completed">
+                <div class="step-circle">✓</div>
+                <span class="step-title">Confirmed</span>
+              </div>
+              <div class="tracker-line" [class.active]="order.status === 'Dispatched' || order.status === 'Delivered'"></div>
+              <div class="tracker-step" [class.completed]="order.status === 'Dispatched' || order.status === 'Delivered'">
+                <div class="step-circle">{{ order.status === 'Dispatched' || order.status === 'Delivered' ? '✓' : '2' }}</div>
+                <span class="step-title">Shipped</span>
+              </div>
+              <div class="tracker-line" [class.active]="order.status === 'Delivered'"></div>
+              <div class="tracker-step" [class.completed]="order.status === 'Delivered'">
+                <div class="step-circle">{{ order.status === 'Delivered' ? '✓' : '3' }}</div>
+                <span class="step-title">Delivered</span>
+              </div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="order-items-table">
+              @for (item of order.items; track item.productId + '-' + item.size) {
+                <div class="order-item-row flex-between">
+                  <div class="order-item-info flex">
+                    <img [src]="item.image" [alt]="item.name" class="order-item-img" />
+                    <div class="item-text">
+                      <h4 class="item-title">{{ item.name }}</h4>
+                      <div class="item-tags flex">
+                        <span class="size-tag">Size: {{ item.size }}</span>
+                        <span class="qty-tag">Qty: {{ item.quantity }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="order-item-pricing text-right">
+                    <div class="item-price">₹{{ item.price * item.quantity }}</div>
+                    <div class="item-unit-price">₹{{ item.price }} / item</div>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Order Card Footer -->
+            <div class="order-card-footer flex-between">
+              <div class="footer-help flex">
+                <span class="support-icon">💬</span>
+                <span>Need help with this order? <a href="#" class="help-link">Contact Support</a></span>
+              </div>
+
+              <div class="footer-actions flex">
+                <button type="button" class="btn-invoice">Download Invoice (PDF)</button>
+                <a routerLink="/" class="btn-reorder">Explore Similar Styles</a>
+              </div>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</div>

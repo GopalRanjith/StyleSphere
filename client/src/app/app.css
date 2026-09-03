@@ -135,16 +135,33 @@
   border-color: var(--brand-color);
 }
 
+.nav-orders-link {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: var(--transition);
+}
+
+.nav-orders-link:hover, .nav-orders-link.active-link {
+  color: var(--brand-color);
+  background: #fee2e2;
+}
+
 .bag-btn {
   position: relative;
   background-color: #f1f2f4;
   padding: 8px 16px;
   border-radius: 20px;
+  text-decoration: none;
   transition: var(--transition);
 }
 
-.bag-btn:hover {
-  background-color: #e5e7eb;
+.bag-btn:hover, .bag-btn.active-bag {
+  background-color: #fee2e2;
+  color: var(--brand-color);
 }
 
 .badge {

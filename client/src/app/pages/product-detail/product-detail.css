@@ -198,11 +198,37 @@
 }
 
 /* CTA */
+.pdp-button-group {
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
 .pdp-add-btn {
+  flex: 1;
+  min-width: 180px;
   height: 52px;
   font-size: 15px;
   font-weight: 700;
-  margin-bottom: 24px;
+}
+
+.pdp-view-cart-btn {
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  background: #111827;
+  color: #ffffff;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.pdp-view-cart-btn:hover {
+  background: #1f2937;
 }
 
 .btn-added {

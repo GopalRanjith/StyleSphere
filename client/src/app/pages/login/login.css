@@ -74,14 +74,52 @@
   text-align: left;
 }
 
-.demo-account-info {
+.test-accounts-section {
   border-top: 1px solid var(--border-color);
-  padding-top: 24px;
+  padding-top: 20px;
+  text-align: center;
 }
 
-.demo-text {
-  font-size: 12px;
+.test-accounts-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   color: var(--text-secondary);
-  margin-bottom: 12px;
-  text-align: center;
+}
+
+.account-chips {
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.chip {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  padding: 5px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chip:hover {
+  background: #fee2e2;
+  border-color: var(--brand-color);
+  color: var(--brand-color);
+}
+
+.form-row {
+  display: flex;
+}
+
+.mr-1 {
+  margin-right: 8px;
+}
+
+.flex-1 {
+  flex: 1;
 }

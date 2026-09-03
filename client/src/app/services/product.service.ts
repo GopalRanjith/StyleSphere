@@ -287,7 +287,30 @@ export class ProductService {
     }
   ]);
 
+  private readonly apiUrl = typeof window !== 'undefined' && 
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:7071/api'
+      : '/api';
+
   readonly products = this.productsList.asReadonly();
+
+  constructor() {
+    this.loadProducts();
+  }
+
+  async loadProducts(): Promise<void> {
+    try {
+      const res = await fetch(`${this.apiUrl}/products`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.products && data.products.length > 0) {
+          this.productsList.set(data.products);
+        }
+      }
+    } catch {
+      // Kept fallback products seamlessly
+    }
+  }
 
   getProductById(id: number): Product | undefined {
     return this.productsList().find(p => p.id === id);

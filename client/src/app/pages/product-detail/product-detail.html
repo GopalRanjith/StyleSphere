@@ -75,19 +75,26 @@
           </select>
         </div>
 
-        <!-- CTA Add To Bag -->
-        <button
-          type="button"
-          class="btn btn-primary w-100 pdp-add-btn"
-          [class.btn-added]="isAdded()"
-          (click)="addToBag()"
-        >
-          @if (isAdded()) {
-            ✔ Added to Bag
-          } @else {
-            Add to Bag
+        <!-- CTA Add To Bag & View Bag -->
+        <div class="pdp-button-group flex">
+          <button
+            type="button"
+            class="btn btn-primary pdp-add-btn"
+            [class.btn-added]="isAdded()"
+            (click)="addToBag()"
+          >
+            @if (isAdded()) {
+              ✔ Added to Bag!
+            } @else {
+              Add to Bag
+            }
+          </button>
+          @if (cartService.totalItemsCount() > 0) {
+            <a routerLink="/cart" class="btn btn-secondary pdp-view-cart-btn">
+              Go to Bag ({{ cartService.totalItemsCount() }}) →
+            </a>
           }
-        </button>
+        </div>
 
         <!-- AI Shopping Insight Narrative -->
         <div class="ai-insight-box mt-3 mb-3">

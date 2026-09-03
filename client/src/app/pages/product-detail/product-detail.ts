@@ -13,7 +13,7 @@ import { CartService } from '../../services/cart.service';
 export class ProductDetailComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly productService = inject(ProductService);
-  private readonly cartService = inject(CartService);
+  readonly cartService = inject(CartService);
 
   readonly product = computed<Product | undefined>(() => {
     const idParam = this.route.snapshot.paramMap.get('id');

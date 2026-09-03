@@ -21,7 +21,7 @@
     </div>
 
     @if (activeSubTab() === 'login') {
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
         @if (loginError()) {
           <div class="alert alert-danger">
             {{ loginError() }}
@@ -67,31 +67,86 @@
         </button>
       </form>
 
-      <div class="demo-account-info mt-3">
-        <p class="demo-text">For testing, use the button below to autofill demo credentials:</p>
-        <button class="btn btn-secondary w-100 mt-1" type="button" (click)="fillCredentials()">
-          Autofill Demo Credentials
-        </button>
+      <!-- Database Seed Accounts Helper -->
+      <div class="test-accounts-section mt-4">
+        <span class="test-accounts-title">Quick Select Test Account (DB):</span>
+        <div class="account-chips flex mt-2">
+          <button type="button" class="chip" (click)="fillAccount('ranjith@stylesphere.com')">
+            Ranjith
+          </button>
+          <button type="button" class="chip" (click)="fillAccount('priya.sharma@stylesphere.com')">
+            Priya
+          </button>
+          <button type="button" class="chip" (click)="fillAccount('arjun.mehta@stylesphere.com')">
+            Arjun
+          </button>
+          <button type="button" class="chip" (click)="fillAccount('user@stylesphere.com')">
+            Demo User
+          </button>
+        </div>
       </div>
     } @else {
-      <!-- Register Form Placeholder -->
-      <div class="register-form mt-2">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="First Name" />
+      <!-- Real Register Form -->
+      <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()" class="register-form mt-2">
+        @if (registerError()) {
+          <div class="alert alert-danger">
+            {{ registerError() }}
+          </div>
+        }
+
+        <div class="form-row flex">
+          <div class="form-group flex-1 mr-1">
+            <input 
+              type="text" 
+              formControlName="firstName" 
+              class="form-control" 
+              placeholder="First Name" 
+            />
+            @if (registerForm.controls.firstName.touched && registerForm.controls.firstName.invalid) {
+              <span class="error-msg">Required</span>
+            }
+          </div>
+          <div class="form-group flex-1">
+            <input 
+              type="text" 
+              formControlName="lastName" 
+              class="form-control" 
+              placeholder="Last Name" 
+            />
+            @if (registerForm.controls.lastName.touched && registerForm.controls.lastName.invalid) {
+              <span class="error-msg">Required</span>
+            }
+          </div>
         </div>
+
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Last Name" />
+          <input 
+            type="email" 
+            formControlName="email" 
+            class="form-control" 
+            placeholder="Email ID" 
+          />
+          @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+            <span class="error-msg">Valid email required</span>
+          }
         </div>
+
         <div class="form-group">
-          <input type="email" class="form-control" placeholder="Email ID" />
+          <input 
+            type="password" 
+            formControlName="password" 
+            class="form-control" 
+            placeholder="Create Password (min. 6 chars)" 
+          />
+          @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
+            <span class="error-msg">Must be at least 6 characters</span>
+          }
         </div>
-        <div class="form-group">
-          <input type="password" class="form-control" placeholder="Create Password" />
-        </div>
-        <button type="button" class="btn btn-primary w-100 mt-2" (click)="setTab('login')">
-          Register & Sign In
+
+        <button type="submit" class="btn btn-primary w-100 mt-2" [disabled]="isLoading()">
+          @if (isLoading()) { Creating Account... } @else { Create Account & Sign In }
         </button>
-      </div>
+      </form>
     }
   </div>
 </div>

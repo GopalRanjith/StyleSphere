@@ -40,6 +40,21 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/product-detail/product-detail').then(m => m.ProductDetailComponent)
   },
   {
+    path: 'cart',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/cart/cart').then(m => m.CartComponent)
+  },
+  {
+    path: 'orders',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/orders/orders').then(m => m.OrdersComponent)
+  },
+  {
+    path: 'ai-recommendations',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/ai-recommendations/ai-recommendations').then(m => m.AiRecommendationsComponent)
+  },
+  {
     path: '**',
     redirectTo: ''
   }

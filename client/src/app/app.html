@@ -2,7 +2,7 @@
 <div class="top-info-bar">
   <div class="container bar-content flex-between">
     <span>Free Standard Shipping on orders above ₹1,999</span>
-    <span>Demo Login: <strong>user@stylesphere.com</strong> / <strong>password123</strong></span>
+    <span>⚡ Use code <strong>STYLE2026</strong> for ₹200 OFF on your first order</span>
   </div>
 </div>
 
@@ -20,7 +20,7 @@
       <ul class="nav-links flex">
         <li><a routerLink="/men" routerLinkActive="active-nav" class="nav-item">Men</a></li>
         <li><a routerLink="/women" routerLinkActive="active-nav" class="nav-item">Women</a></li>
-        <li><a routerLink="/" class="nav-item ai-nav">AI Styling</a></li>
+        <li><a routerLink="/ai-recommendations" routerLinkActive="active-nav" class="nav-item ai-nav">✨ AI Styling</a></li>
       </ul>
     </nav>
 
@@ -29,6 +29,7 @@
       @if (authService.isAuthenticated()) {
         <div class="member-profile flex">
           <span class="user-greeting">Hi, {{ authService.currentUser()?.email?.split('@')?.[0] }}</span>
+          <a routerLink="/orders" routerLinkActive="active-link" class="nav-orders-link">Orders</a>
           <button type="button" class="btn-signout" (click)="logout()">Sign Out</button>
         </div>
       } @else {
@@ -38,7 +39,7 @@
         </a>
       }
 
-      <a class="action-btn flex bag-btn">
+      <a routerLink="/cart" routerLinkActive="active-bag" class="action-btn flex bag-btn" title="Shopping Bag">
         <span class="icon">🛍️</span>
         <span class="bag-label">Bag</span>
         @if (cartService.totalItemsCount() > 0) {
