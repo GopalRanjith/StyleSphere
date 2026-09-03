@@ -111,12 +111,4 @@ export class LoginComponent {
       this.registerError.set('Registration service error. Please try again.');
     }
   }
-
-  fillAccount(email: string): void {
-    this.loginForm.setValue({
-      email,
-      password: 'password123'
-    });
-    this.loginError.set(null);
-  }
 }

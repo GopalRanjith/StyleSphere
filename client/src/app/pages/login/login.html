@@ -67,24 +67,7 @@
         </button>
       </form>
 
-      <!-- Database Seed Accounts Helper -->
-      <div class="test-accounts-section mt-4">
-        <span class="test-accounts-title">Quick Select Test Account (DB):</span>
-        <div class="account-chips flex mt-2">
-          <button type="button" class="chip" (click)="fillAccount('ranjith@stylesphere.com')">
-            Ranjith
-          </button>
-          <button type="button" class="chip" (click)="fillAccount('priya.sharma@stylesphere.com')">
-            Priya
-          </button>
-          <button type="button" class="chip" (click)="fillAccount('arjun.mehta@stylesphere.com')">
-            Arjun
-          </button>
-          <button type="button" class="chip" (click)="fillAccount('user@stylesphere.com')">
-            Demo User
-          </button>
-        </div>
-      </div>
+
     } @else {
       <!-- Real Register Form -->
       <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()" class="register-form mt-2">
