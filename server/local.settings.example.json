@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
+    "DB_HOST": "localhost",
+    "DB_USER": "root",
+    "DB_PASSWORD": "YOUR_PASSWORD_HERE",
+    "DB_DATABASE": "stylesphere_db",
+    "DB_PORT": "3306",
+    "JWT_SECRET": "stylesphere_jwt_secret_key_2026"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "*"
+  }
+}
