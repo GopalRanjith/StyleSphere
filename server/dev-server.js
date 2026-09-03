@@ -175,7 +175,7 @@ const server = http.createServer(async (req, res) => {
     });
 });
 
-const PORT = 7071;
+const PORT = process.env.PORT || 7071;
 server.listen(PORT, () => {
     console.log(`[DevServer] StyleSphere local dev server successfully started at http://localhost:${PORT}/`);
     console.log('[DevServer] Ready to accept API requests from frontend client!');
